@@ -1,0 +1,10 @@
+.idea
+
+_product
+temp
+out
+notuse
+
+*.iws
+*.iml
+*.ipr
