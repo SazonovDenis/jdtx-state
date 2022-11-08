@@ -8,7 +8,7 @@ import org.json.simple.*;
 import java.io.*;
 import java.util.*;
 
-public class TreeItemContainer_Test extends TestCase {
+public class StateItemContainer_Test extends TestCase {
 
     int n = 0;
 
@@ -16,7 +16,7 @@ public class TreeItemContainer_Test extends TestCase {
         System.out.println("TreeItemContainer");
 
         // Простейший одиночный counter - подчиненные процессы
-        TreeItemContainer stateMain = new TreeItemContainer();
+        StateItemContainer stateMain = new StateItemContainer();
         pauseAndPrint(stateMain.getRoot());
 
         stateMain.start();
@@ -52,7 +52,7 @@ public class TreeItemContainer_Test extends TestCase {
         System.out.println("TreeItemContainer");
         
         // Простейший одиночный counter - подчиненные процессы
-        TreeItemContainer stateMain = new TreeItemContainer();
+        StateItemContainer stateMain = new StateItemContainer();
         pauseAndPrintFile(stateMain.getRoot(), 1);
 
         stateMain.start();

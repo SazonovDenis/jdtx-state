@@ -3,13 +3,13 @@ package com.jdtx.state;
 import com.jdtx.state.impl.*;
 import com.jdtx.tree.*;
 
-public class TreeItemContainer {
+public class StateItemContainer {
 
     ITreeNode<StateItem> root;
 
     ITreeNode<StateItem> stackPoint;
 
-    public TreeItemContainer() {
+    public StateItemContainer() {
         root = new TreeNode<>(null);
         stackPoint = root;
     }
