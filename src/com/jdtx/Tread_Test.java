@@ -1,6 +1,7 @@
 package com.jdtx;
 
 import com.jdtx.state.*;
+import com.jdtx.state.impl.*;
 import com.jdtx.tree.*;
 import org.apache.commons.io.*;
 import org.json.simple.*;
@@ -10,37 +11,34 @@ import java.util.*;
 
 public class Tread_Test {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         System.out.println("Hello");
 
-        StateItemContainer state = new StateItemContainer();
-
-        Thread thread2 = new Thread(new MyThread(state, 50, "1 xxx"));
-        Thread thread1 = new Thread(new MyThread(state, 200, "2 xxx-yyy"));
-        Thread thread3 = new Thread(new MyThread(state, 900, "3 xxx-yyy-zzz"));
-        Thread threadControl = new Thread(new MyThreadControl(state));
-
-        state.start();
-        state.current().setValue("name", "main");
+        Thread thread2 = new Thread(new MyThreadWork("1 xxx", 50, 100));
+        Thread thread1 = new Thread(new MyThreadWork("2 xxx-yyy", 200, 20));
+        Thread thread3 = new Thread(new MyThreadWork("3 xxx-yyy-zzz", 900, 30));
+        Thread thread4 = new Thread(new MyThreadWork(null, 900, 40));
+        Thread threadControl = new Thread(new MyThreadControl());
 
         threadControl.start();
         thread1.start();
         thread2.start();
         thread3.start();
+        thread4.start();
     }
 
     static class MyThreadControl implements Runnable {
 
-        StateItemContainer state;
+        StateItemStack state;
 
-        public MyThreadControl(StateItemContainer state) {
-            this.state = state;
+        public MyThreadControl() {
+            state = StateItemStackThread.stateItemStack;
         }
 
         public void run() {
             while (true) {
                 try {
-                    ITreeNode<StateItem> root = state.getRoot();
+                    ITreeNode<StateItem> root = state.getAll();
 
                     Map map = UtStateCnv.stateItemToMap(root);
                     JSONObject jsonObject = new JSONObject(map);
@@ -62,34 +60,40 @@ public class Tread_Test {
         }
     }
 
-    static class MyThread extends Thread {
+    static class MyThreadWork extends Thread {
 
-        StateItemContainer state;
-        int sleep;
         String name;
+        int sleepDuration;
+        int stepsCount;
 
-        public MyThread(StateItemContainer state, int sleep, String name) {
+        public MyThreadWork(String name, int sleepDuration, int stepsCount) {
             super();
-            this.state = state;
-            this.sleep = sleep;
             this.name = name;
+            this.sleepDuration = sleepDuration;
+            this.stepsCount = stepsCount;
         }
 
         public void run() {
-            Thread current = Thread.currentThread();
-
+            StateItemStackNamed state = StateItemStackThread.stateItemStack;
 
             while (true) {
-                state.start();
-                state.current().setValue("name", name);
-                state.current().setValue("count", 0);
+                // Начинаем цикл
+                System.out.println("Name: " + name + ", start: " + new Date());
+                state.start(name);
+                state.get().setValue("info", name);
+                state.get().incValue("total", 1);
+                state.get().setValue("step", 0);
+                state.get().setValue("stepsCount", stepsCount);
 
-                for (int i = 0; i < 1000; i++) {
-                    System.out.println("Date: " + new Date() + ", thread: " + current + ", name: " + name);
-                    state.current().incValue("count", 1);
+                // Выполняем цикл
+                for (int i = 0; i < stepsCount; i++) {
+                    System.out.println("Name: " + name + ", step: " + i + "/" + stepsCount);
+                    state.get().incValue("step", 1);
                     doSleep();
                 }
 
+                // Ждем перед следующим циклом
+                System.out.println("Name: " + name + ", steps done: " + new Date());
                 state.stop();
                 doSleep();
                 doSleep();
@@ -100,7 +104,7 @@ public class Tread_Test {
 
         private void doSleep() {
             try {
-                Thread.sleep(sleep);
+                Thread.sleep(sleepDuration);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 return;

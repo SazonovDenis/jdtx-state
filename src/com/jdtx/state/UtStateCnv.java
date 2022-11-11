@@ -1,5 +1,6 @@
 package com.jdtx.state;
 
+import com.jdtx.state.impl.*;
 import com.jdtx.tree.*;
 
 import java.util.*;
@@ -15,6 +16,9 @@ public class UtStateCnv {
         if (node.getItem() != null) {
             StateItem stateItem = node.getItem();
             // Свойства
+            if (stateItem.getValues().containsKey(StateItemStackNamedImpl.keyForStateItemName)) {
+                res.put("name", stateItem.getValue(StateItemStackNamedImpl.keyForStateItemName));
+            }
             res.put("started", stateItem.isStarted());
             res.put("duration", stateItem.getDuration());
             // Атрибуты

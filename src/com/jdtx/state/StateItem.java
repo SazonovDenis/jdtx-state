@@ -2,6 +2,9 @@ package com.jdtx.state;
 
 import java.util.*;
 
+/**
+ * Таймер + атрибуты
+ */
 public interface StateItem {
 
     void setValue(String key, Object value);
@@ -36,8 +39,14 @@ public interface StateItem {
      */
     long getDuration();
 
+    /**
+     * @return время последнего начала работы
+     */
     Date getStart();
 
+    /**
+     * @return время остановки работы
+     */
     Date getStop();
 
 }

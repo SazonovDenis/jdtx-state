@@ -1,20 +1,26 @@
-package com.jdtx.state;
+package com.jdtx.state.impl;
 
-import com.jdtx.state.impl.*;
+import com.jdtx.state.*;
 import com.jdtx.tree.*;
 
-public class StateItemContainer {
+public class StateItemStackImpl implements StateItemStack {
+
 
     ITreeNode<StateItem> root;
 
     ITreeNode<StateItem> stackPoint;
 
-    public StateItemContainer() {
-        root = new TreeNode<>(null);
+    public StateItemStackImpl() {
+        root = new TreeNode<>(new StateItemImpl());
         stackPoint = root;
     }
 
-    public ITreeNode<StateItem> getRoot() {
+
+    // ---
+    // StateItemContainerStack
+    // ---
+
+    public ITreeNode<StateItem> getAll() {
         return root;
     }
 
@@ -43,8 +49,9 @@ public class StateItemContainer {
         //stackPoint.getChildNodes().remove(currentStackPointNode);
     }
 
-    public StateItem current() {
+    public StateItem get() {
         return stackPoint.getItem();
     }
+
 
 }

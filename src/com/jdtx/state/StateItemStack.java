@@ -1,45 +1,36 @@
 package com.jdtx.state;
 
+import com.jdtx.tree.*;
+
 /**
- * Помогает строить дерево из счетчиков
+ * Формирует из StateItem стековую (древовидную) структуру
  */
 public interface StateItemStack {
 
     /**
-     * Создать и запустить новый элемент,
-     * элемент кладется на вершину стека.
-     *
-     * @param timerName имя таймера или null
-     * @return экземпляр нового таймера
+     * Создать и запустить новый элемент.
+     * <p>
+     * Элемент создается, запускается и кладется на вершину стека.
      */
-    StateItem push(String timerName);
+    void start();
 
     /**
-     * Остановить таймер.
-     * Запущенный таймер - остановится, извлекается со стека.
-     *
-     * @param timerName имя таймера или null
-     * @return таймер
+     * Остановить и извлечь из стека текущий элемент.
      */
-    StateItem pop(String timerName);
+    void stop();
 
     /**
-     * Возвращмет таймер по имени или с вершины стека.
+     * Возвращает текущий активный элемент (с вершины стека).
      *
-     * @param timerName имя таймера или null
-     * @return таймер
+     * @return текущий элемент с вершины стека
      */
-    StateItem get(String timerName);
+    StateItem get();
 
     /**
+     * Делает копию и возвращает всё дерево элементов.
      *
+     * @return всё дерево элементов
      */
-    StateItem add(String timerName);
-
-    /**
-     * Удаляет элемент и всех его потомков
-     */
-    void remove(String timerName);
-
+    ITreeNode<StateItem> getAll();
 
 }
