@@ -25,7 +25,7 @@ public class StateItemImpl implements StateItem {
         return values.get(key);
     }
 
-    public Map getValues() {
+    public Map<String, Object> getValues() {
         return values;
     }
 
@@ -80,5 +80,17 @@ public class StateItemImpl implements StateItem {
         return UtData.dateTimeValueOf(values.get("__stop__"));
     }
 
+    public void assign(StateItem item) {
+        StateItemImpl itemImpl = (StateItemImpl) item;
+
+        //
+        this.started = itemImpl.started;
+
+        //
+        this.getValues().clear();
+        for (String key : itemImpl.getValues().keySet()) {
+            this.setValue(key, itemImpl.getValues().get(key));
+        }
+    }
 
 }

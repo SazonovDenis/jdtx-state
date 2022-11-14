@@ -31,6 +31,6 @@ public interface StateItemStack {
      *
      * @return всё дерево элементов
      */
-    ITreeNode<StateItem> getAll();
+    ITreeNode<StateItem> getAll() throws Exception;
 
 }

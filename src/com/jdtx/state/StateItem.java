@@ -49,4 +49,9 @@ public interface StateItem {
      */
     Date getStop();
 
+    /**
+     * Стать копией item
+     */
+    void assign(StateItem item);
+
 }

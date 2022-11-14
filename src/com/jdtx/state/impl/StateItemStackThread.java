@@ -3,11 +3,10 @@ package com.jdtx.state.impl;
 import com.jdtx.state.*;
 import com.jdtx.tree.*;
 
+import java.lang.reflect.*;
 import java.util.*;
 
 public class StateItemStackThread implements StateItemStackNamed {
-
-    public static StateItemStackThread stateItemStack = new StateItemStackThread();
 
     private Map<Thread, StateItemStackNamed> stackByThread = new HashMap<>();
 
@@ -26,12 +25,13 @@ public class StateItemStackThread implements StateItemStackNamed {
         return stateItemStack.get();
     }
 
-    // todo копию!!!!!
-    synchronized public ITreeNode<StateItem> getAll() {
+    synchronized public ITreeNode<StateItem> getAll() throws Exception {
         ITreeNode<StateItem> nodeAllThreadRoot = new TreeNode<>(null);
 
         for (StateItemStack stateItemStack : stackByThread.values()) {
-            nodeAllThreadRoot.addChildNode(stateItemStack.getAll());
+            ITreeNode<StateItem> nodeThread = stateItemStack.getAll();
+            ITreeNode<StateItem> nodeThreadCopy = cloneTreeNode(nodeThread);
+            nodeAllThreadRoot.addChildNode(nodeThreadCopy);
         }
 
         return nodeAllThreadRoot;
@@ -58,6 +58,29 @@ public class StateItemStackThread implements StateItemStackNamed {
         }
 
         return stateItemStack;
+    }
+
+    public ITreeNode<StateItem> cloneTreeNode(ITreeNode<StateItem> node) throws Exception {
+        StateItem cloneItem = cloneStateItem(node.getItem());
+        ITreeNode<StateItem> cloneNode = new TreeNode<>(cloneItem);
+
+        for (ITreeNode<StateItem> nodeChild : node.getChildNodes()) {
+            cloneNode.addChildNode(cloneTreeNode(nodeChild));
+        }
+
+        return cloneNode;
+    }
+
+    public StateItem cloneStateItem(StateItem item) throws Exception {
+        Constructor<?> constructor = item.getClass().getConstructor();
+        StateItem clone = (StateItem) constructor.newInstance();
+
+        //
+        clone.assign(item);
+
+        //
+        return clone;
+
     }
 
 }
