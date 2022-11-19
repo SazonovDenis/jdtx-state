@@ -46,12 +46,14 @@ public class StateItemImpl implements StateItem {
     }
 
     public void stop() {
-        long duration = getDuration();
-        //
-        values.put("__stop__", new Date());
-        values.put("__duration__", duration);
-        //
-        started = false;
+        if (started) {
+            long duration = getDuration();
+            //
+            values.put("__stop__", new Date());
+            values.put("__duration__", duration);
+            //
+            started = false;
+        }
     }
 
     public boolean isStarted() {

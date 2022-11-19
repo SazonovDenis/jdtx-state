@@ -3,6 +3,9 @@ package com.jdtx.ut;
 import java.text.*;
 import java.util.*;
 
+/**
+ * Десериализация/типизация примивных типов.
+ */
 public class UtData {
 
     public static long longValueOf(Object value) {

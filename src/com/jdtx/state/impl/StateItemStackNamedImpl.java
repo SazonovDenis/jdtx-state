@@ -28,7 +28,7 @@ public class StateItemStackNamedImpl extends StateItemStackImpl implements State
         }
 
         // Ищем ранее запускавшийся дочерний элемент с указанным именем
-        ITreeNode<StateItem> childNode = findChildByName(name);
+        ITreeNode<StateItem> childNode = findChildByName(stackPoint, name);
 
         if (childNode != null) {
             // Нашли ранее запускавшийся дочерний элемент
@@ -48,8 +48,9 @@ public class StateItemStackNamedImpl extends StateItemStackImpl implements State
     }
 
     public void remove(String name) {
-        ITreeNode<StateItem> node = findChildByName(name);
+        ITreeNode<StateItem> node = findChildByName(stackPoint, name);
         if (node != null) {
+            node.getItem().stop();
             stackPoint.getChildNodes().remove(node);
         }
     }
@@ -60,9 +61,8 @@ public class StateItemStackNamedImpl extends StateItemStackImpl implements State
      * @param name имя элемента
      * @return элемент
      */
-    private ITreeNode<StateItem> findChildByName(String name) {
-        ITreeNode<StateItem> node = stackPoint;
-        for (ITreeNode<StateItem> childNode : node.getChildNodes()) {
+    private ITreeNode<StateItem> findChildByName(ITreeNode<StateItem> owner, String name) {
+        for (ITreeNode<StateItem> childNode : owner.getChildNodes()) {
             if (childNode.getItem().getValue(keyForStateItemName).equals(name)) {
                 return childNode;
             }

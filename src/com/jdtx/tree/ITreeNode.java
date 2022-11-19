@@ -2,6 +2,11 @@ package com.jdtx.tree;
 
 import java.util.*;
 
+/**
+ * Универсальное дерево
+ *
+ * @param <O> Класс, экземпляры которого хранятся в узлах дерева
+ */
 public interface ITreeNode<O> {
 
     O getItem();

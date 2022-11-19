@@ -3,7 +3,7 @@ package com.jdtx.state;
 import com.jdtx.tree.*;
 
 /**
- * Формирует из StateItem стековую (древовидную) структуру
+ * Формирует из StateItem стековую (древовидную) структуру.
  */
 public interface StateItemStack {
 
