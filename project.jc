@@ -1,0 +1,12 @@
+//
+load '..'
+//
+project.name = "jdtx-state"
+project.package_root = "jdtx-state"
+//
+include "wax-module-project"
+include "localize-project"
+//
+modules = [
+        'jdtx-state',
+]
